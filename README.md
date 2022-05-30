@@ -1,6 +1,8 @@
 # DjangoTutorial
 Me learning django
 
+time used: 2h
+
 ## how to run this
 >python manage.py migrate # first time only
 >python manage.py runserver
@@ -37,24 +39,30 @@ Use Django and Django REST Framework (https://www.django-rest-framework.org/). Y
   - You can use a database of your choice.
 
 #### REST API 
-  -> [verb] upload
-  -> [verb] download(organization_id???)
-  -> [verb] login (use django use model for auth)
-  -> [verb] logout 
-  -> GET files(organization_id) # query: {path}/files?organization_id=3
 
-  -> GET files/{user_id} # query: {path}/files/{user_id}
-    -> returns: [{
-      uploaded,
-      downloaded,
-      blob
-    }, ...]
+  # gets the list of files by the organisation id
+  GET files ?organizationId={int}
+
+  # downloads a file. 
+  # returns list { uploaded, downloadedCount, blob }
+  GET files/{file_id}
+
+  # uploads a file. returns 201 
+  -> POST files/upload 
+
+  # logs the user in
+  GET user/login
+
+  # logs the user out
+  GET user/logout
+
 
 #### database
   - migrations by manual scripts
 
   dbo.organizations
     .id
+    .name
 
   dbo.users
     .id
