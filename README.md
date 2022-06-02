@@ -3,10 +3,14 @@ Me learning django
 
 time used: 2h
 
+
 ## how to run this
 >python manage.py migrate # first time only
 >python manage.py runserver
-
+> # log in with the user
+>user: django
+>email bd983f53-13e3-46c9-882d-aa178961dbde@mailinator.com (you can check the emails at: https://www.mailinator.com/v4/public/inboxes.jsp?to=bd983f53-13e3-46c9-882d-aa178961dbde)
+>password: unchained
 
 ## Specification
 Please write a web application that provides a REST API for logged-in users to upload and download any kind of files.
@@ -50,11 +54,11 @@ Use Django and Django REST Framework (https://www.django-rest-framework.org/). Y
   # uploads a file. returns 201 
   -> POST files/upload 
 
-  # logs the user in
-  GET user/login
+  # *(done)* logs the user in 
+  GET accounts/login
 
-  # logs the user out
-  GET user/logout
+  #  *(done)* logs the user out
+  GET accounts/logout
 
 
 #### database

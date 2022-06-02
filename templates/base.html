@@ -1,0 +1,42 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Me Learning Django{% endblock %}</title>
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/nav_sidebar.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+  <script src="{% static 'admin/js/nav_siderbar.js' %}" defer></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'admin/css/responsive.css' %}">
+</head>
+<body>
+  <main>    
+    {% if user.is_authenticated %}
+      <!-- Header -->    
+      <div id="header">
+        <div id="branding">
+          <h1 id="site-name"><a href="/">Me learning Django</a></h1>
+        </div>
+        <div id="">
+            
+        </div>         
+        <div id="user-tools">
+            Welcome, 
+            <strong>django</strong>. 
+            <a href="/">View site</a> /
+            <a href="{% url 'logout' %}">Log out</a>       
+        </div>              
+      </div>  
+      <!-- END Header -->
+
+      {% block content %}
+      {% endblock %}
+    {% else %}
+      <p>You are not logged in</p>
+      <a href="{% url 'login' %}">Log In</a>
+    {% endif %}     
+  </main>
+</body>
+</html>
