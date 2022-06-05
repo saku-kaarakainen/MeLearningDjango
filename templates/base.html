@@ -7,7 +7,7 @@
   {% load static %}
   <link rel="stylesheet" type="text/css" href="{% static 'admin/css/base.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'admin/css/nav_sidebar.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
   <script src="{% static 'admin/js/nav_siderbar.js' %}" defer></script>
   <link rel="stylesheet" type="text/css" href="{% static 'admin/css/responsive.css' %}">
 </head>
@@ -19,8 +19,12 @@
         <div id="branding">
           <h1 id="site-name"><a href="/">Me learning Django</a></h1>
         </div>
-        <div id="">
-            
+        <div id="navbar">
+            <!-- list uploads -->
+            <a href="{% url 'files' %}">show uploads</a> /
+            <!-- a.href="files/{file_id}":Download -->
+
+            <a href="{% url 'files' %}">upload a file</a>
         </div>         
         <div id="user-tools">
             Welcome, 
