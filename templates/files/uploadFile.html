@@ -4,5 +4,20 @@
 {% block title %}Upload a file {% endblock %}
 
 {% block content %}
-<p>Upload a file</p>
+<form action="upload" method="POST">
+  {% comment %}
+    https://stackoverflow.com/questions/9692625/csrf-verification-failed-request-aborted-on-django
+  {% endcomment %}
+  {% csrf_token %}
+
+  <div class="form-container">
+    <div class="row">
+      <input type="file" id="file" name="myBlob" />
+    </div>
+    <div class="row">
+      <input type="submit" />
+    </div>
+  </div>
+</form>
+
 {% endblock %}

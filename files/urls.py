@@ -4,8 +4,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', views.getFiles , name='index'),
-    path('uploads', views.getFiles, name='uploads'),
-    path('download', views.downloadFile, name='download'),
-    path('upload', views.uploadFile, name='upload'),
+    path('', views.getFiles.as_view(), name='index'),
+    path('uploads', views.getFiles.as_view(), name='uploads'),
+    path('download', views.downloadFile.as_view(), name='download'),
+    path('upload', views.uploadFile.as_view(), name='upload'),
 ]

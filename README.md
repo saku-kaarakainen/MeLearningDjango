@@ -12,6 +12,10 @@ time used: 2h
 >email bd983f53-13e3-46c9-882d-aa178961dbde@mailinator.com (you can check the emails at: https://www.mailinator.com/v4/public/inboxes.jsp?to=bd983f53-13e3-46c9-882d-aa178961dbde)
 >password: unchained
 
+## To debug (on vs code)
+>to actiavte environment, on mac, run source ./venv/bin/activate on windows, run .\venv\Scripts\activate.bat [if it doesn't work, try to put your absolute path]
+Thanks to: https://stackoverflow.com/questions/68425824/virtualenv-for-django-in-vs-code-not-working-what-am-i-doing-wrong
+
 ## Specification
 Please write a web application that provides a REST API for logged-in users to upload and download any kind of files.
 The users must be able to login and logout. Use either token or session authentication (hint: use the user model and authentication mechanism provided by django). 
