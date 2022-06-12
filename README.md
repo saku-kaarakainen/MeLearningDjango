@@ -1,12 +1,24 @@
 # DjangoTutorial
 Me learning django
 
-time used: 2h
+time used: 7h
 
 
 ## how to run this
->python manage.py migrate # first time only
+### Initialize - Migrations
+>python manage.py makemigrations
+>python manage.py migrate
+
+### Initialize - Create an user to log-in
+># these values are just an example, remember to provide the password
+>python manage.py createsuperuser --username=django --email=django@unchained.com
+
+### finally
 >python manage.py runserver
+
+
+
+
 > # log in with the user
 >user: django
 >email bd983f53-13e3-46c9-882d-aa178961dbde@mailinator.com (you can check the emails at: https://www.mailinator.com/v4/public/inboxes.jsp?to=bd983f53-13e3-46c9-882d-aa178961dbde)

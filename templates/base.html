@@ -13,6 +13,7 @@
 </head>
 <body>
   <main>    
+    {# render header only if user is authenticated #}
     {% if user.is_authenticated %}
       <!-- Header -->    
       <div id="header">
@@ -34,14 +35,26 @@
         </div>              
       </div>  
       <!-- END Header -->
+    {% endif %} 
 
-    <div class="content-container">
-        {% block content %}
-        {% endblock %}
-      {% else %}
+    {# render content if login page or user is logged in #}
+    {% if user.is_authenticated or request.path == "/accounts/login/"  %}
+      <div class="content-container">
+          {% block content %}
+          {% endblock %}
+      </div>
+    {% endif %} 
+
+    {% comment %}
+      render 'redirect to login page' is user is not logged in. Obviously this is not needed at login page. 
+      Ps. i bet this not the "correct" solution, but I'm not that good at django, and I just want to move on with my life...
+    {% endcomment %}
+    {% if not user.is_authenticated and user.is_authenticated or request.path != "/accounts/login/"  %}
+      <div class="content-container">
         <p>You are not logged in</p>
         <a href="{% url 'login' %}">Log In</a>
-      {% endif %}     
+      </div>
+    {% endif %}     
     </div>
   </main>
 </body>
