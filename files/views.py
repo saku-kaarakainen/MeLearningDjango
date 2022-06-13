@@ -50,6 +50,9 @@ class uploadFile(View):
     """
     @login_required
     def post(self, request):
+        print("    stepped in")
+
+
         # TODO: Support multiple organizations
         # 501: NotImplemented, because i follow these status codes: https://www.django-rest-framework.org/api-guide/status-codes/
         # This model assumes there is only one group per user
@@ -71,12 +74,14 @@ class uploadFile(View):
         orgs = request.user.groups.all()
         org = orgs[0]
 
+        print("    found organization:")
+        print(org)
+
         if(org is None):
             return HttpResponse(status=500, content="Unexpected none")
 
-
         file = File(
-            organization = org,
+            group = org,
             blob = blob,
             uploaded = date.today(),
             download_count = 0
