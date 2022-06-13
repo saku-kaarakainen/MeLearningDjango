@@ -4,5 +4,41 @@
 {% block title %}List files {% endblock %}
 
 {% block content %}
-<p>List files</p>
+<h2>{{ pagetitle }}</h2>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Uploaded</th>
+    <th>Download count</th>
+    <th>download link</th>
+  </tr>
+  {% for file in files %}
+    <tr>
+      <td class="td-file-name">{{file.name}}</td>
+      <td class="td-uploaded">{{file.uploaded}}</td>
+      <td class="td-download-count">{{file.download_count}}</td>
+      <td class="td-download-link">
+        <a href="{{ MEDIA_URL }}{{ file.filepath }}" target="_blank">download</a>
+      </td>
+    </tr>
+  {% endfor %}
+
+</table>
+
+<style>
+  h2 {
+    margin-bottom: 1em;
+  }
+
+  table {
+    margin-top: 1em;
+  }
+
+  td.td-download-count {
+    text-align: center;
+  }
+</style>
+
 {% endblock %}
+

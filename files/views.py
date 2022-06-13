@@ -7,18 +7,37 @@ from django.contrib.auth.models import User
 from files.models import File
 from files.forms import UploadFileForm
 from datetime import date
-
+from common.utils.db_helpers import get_organization_by_user_from_the_request
 
 # https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication#testing_in_views
 
 
 class getFiles(View):
     user = User
-
-    # GET uploads?organizationId
+    
+    # GET uploads
     @login_required
     def get(self, request):
-        return render(request, "listFiles.html")
+        group = get_organization_by_user_from_the_request(request)
+        files = File.objects.filter(group_id=group.id).all()
+        data = {
+            'pagetitle': 'Uploaded files by the organization',
+            'files': files,
+        }
+        return render(request, "listFiles.html", data)
+
+class getFilesByUser(View):
+    user = User
+    
+    # GET uploads/my
+    @login_required
+    def get(self, request):
+        files = File.objects.filter(user_id=request.user.id).all()
+        data = {
+            'pagetitle': 'Uploaded files by the user',
+            'files': files,
+        }
+        return render(request, "listFiles.html", data)
 
 class downloadFile(View):
     user = User
@@ -38,7 +57,6 @@ class uploadFile(View):
     def get(self, request):
         return render(request, "uploadFile.html")
 
-
     """
         Route: POST files/upload
 
@@ -50,38 +68,20 @@ class uploadFile(View):
     """
     @login_required
     def post(self, request):
-        print("    stepped in")
-
-
-        # TODO: Support multiple organizations
-        # 501: NotImplemented, because i follow these status codes: https://www.django-rest-framework.org/api-guide/status-codes/
-        # This model assumes there is only one group per user
-        if(request.user.groups.count() == 0):
-            return HttpResponse(status=500, content="User is missing a group.")
-        
-        if(request.user.groups.count() > 1):
-            return HttpResponse(status=501) # multi-group model is not supported
-             
+        #try:
         #title = request.FILES.charField(max_length=50)
         form = UploadFileForm(request.POST, request.FILES)
-    
+
         #if not form.is_valid():
         #    return HttpResponseRedirect('upload/fail?reason=formIsNotValid')        
 
         """ if we get here, then it's safe to save the form into the database"""
-        blob = request.FILES['myFile']
-        
-        orgs = request.user.groups.all()
-        org = orgs[0]
-
-        print("    found organization:")
-        print(org)
-
-        if(org is None):
-            return HttpResponse(status=500, content="Unexpected none")
+        blob = request.FILES['myFile']            
+        group = get_organization_by_user_from_the_request(request)
 
         file = File(
-            group = org,
+            group = group,
+            user = request.user,
             blob = blob,
             uploaded = date.today(),
             download_count = 0
@@ -89,4 +89,7 @@ class uploadFile(View):
         file.save()
 
         return HttpResponseRedirect('upload/success')
+        
+        # except:
+        #     return HttpResponse(status=500, content="An error occured while uploading the file. If the error persists, bla bla bla.")
 

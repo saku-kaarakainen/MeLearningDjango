@@ -2,6 +2,13 @@
 Me learning django
 
 ## how to run this
+`too long, didn't read:`
+># NOTE: This is made with VS code and windows
+>python manage.py makemigrations  # step 1, only once
+>python manage.py migrate         # step 2, only once
+>python manage.py seed            # step 3, only once
+>python manage.py runserver       # to run the server
+
 ### Initialize - Migrations
 First, run:
 >python manage.py makemigrations
@@ -33,6 +40,7 @@ And the user will belong in the group. In this project an organization equals a 
 > name='organization 1'
 >)
 
+The script also adds some files in the database for testing.
 
 ### finally run the app
 >python manage.py runserver
