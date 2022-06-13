@@ -1,21 +1,44 @@
 # DjangoTutorial
 Me learning django
 
-time used: 7h
-
-
 ## how to run this
 ### Initialize - Migrations
+First, run:
 >python manage.py makemigrations
 >python manage.py migrate
 
-### Initialize - Create an user to log-in
-># these values are just an example, remember to provide the password
->python manage.py createsuperuser --username=django --email=django@unchained.com
+### Initialize first user
+Then you can run the following script.
+>python manage.py seed
 
-### finally
+It will create an user with the following information.
+The credentials are not very secure, but the app is easier test with this user.
+The seed is found from `org/managemenet/commands/seed.py`
+> user = User(
+>   id=1,
+>   password='pbkdf2_sha256$320000$9X6obM0Qq2MAV0oko1Xrvz$e2tHcKL8+2h6bsgIz1rTVruniOF4i9ugRShLSasUZRU=' # equals to'su',
+>   is_superuser=True,
+>   username='su',
+>   last_name='User',
+>   email='super.user@django.org',
+>   is_staff=True,
+>   is_active=True,
+>   date_joined=date.today(),
+>   first_name='Super'
+> )
+
+And the user will belong in the group. In this project an organization equals a group
+>group = Group(
+> id=1,
+> name='organization 1'
+>)
+
+
+### finally run the app
 >python manage.py runserver
 
+As the app will say, the dev-server will be ran at
+`http://127.0.0.1:8000/`
 
 
 

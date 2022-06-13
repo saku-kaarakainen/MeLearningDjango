@@ -3,8 +3,10 @@
 
 {% block title %}Upload a file {% endblock %}
 
+
+
 {% block content %}
-<form action="upload" method="POST">
+<form enctype="multipart/form-data" action="upload" method="POST">
   {% comment %}
     https://stackoverflow.com/questions/9692625/csrf-verification-failed-request-aborted-on-django
   {% endcomment %}
@@ -12,12 +14,32 @@
 
   <div class="form-container">
     <div class="row">
-      <input type="file" id="file" name="myBlob" />
+      <input type="file" id="file" name="myFile" />
     </div>
-    <div class="row">
+
+    <div id="row-submit" class="row">
       <input type="submit" />
+    </div>
+
+    <div id="row-info" class="row" >
+      <pre>
+
+      </pre>
     </div>
   </div>
 </form>
+
+
+<style>
+  div#row-info.row pre {
+    width: 60%;
+    margin: auto;
+    padding: 0;
+    left: 30%;
+    position: absolute;
+    overflow-x: hidden;
+  }
+
+</style>
 
 {% endblock %}

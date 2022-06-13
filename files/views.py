@@ -1,10 +1,13 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse 
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.views.generic import View
 from django.contrib.auth.models import User
 from files.models import File
+from files.forms import UploadFileForm
+from datetime import date
+
 
 # https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Authentication#testing_in_views
 
@@ -15,7 +18,7 @@ class getFiles(View):
     # GET uploads?organizationId
     @login_required
     def get(self, request):
-        return render(request, "files/listFiles.html")
+        return render(request, "listFiles.html")
 
 class downloadFile(View):
     user = User
@@ -24,7 +27,7 @@ class downloadFile(View):
     @login_required
     def get(self, request):
         data = []
-        return render(request, "files/downloadFile.html", data)
+        return render(request, "downloadFile.html", data)
 
 class uploadFile(View):
     user = User
@@ -33,7 +36,7 @@ class uploadFile(View):
     # GET files/upload
     @login_required
     def get(self, request):
-        return render(request, "files/uploadFile.html")
+        return render(request, "uploadFile.html")
 
 
     """
@@ -47,11 +50,38 @@ class uploadFile(View):
     """
     @login_required
     def post(self, request):
-        #title = request.FILES.charField(max_length=50)
-        # file = File(request.FILES.myBlob)
-
-        # if file.is_valid():
-        #     file.save()
-        #     return HttpResponseRedirect('upload/success')
+        # TODO: Support multiple organizations
+        # 501: NotImplemented, because i follow these status codes: https://www.django-rest-framework.org/api-guide/status-codes/
+        # This model assumes there is only one group per user
+        if(request.user.groups.count() == 0):
+            return HttpResponse(status=500, content="User is missing a group.")
         
-        return HttpResponseRedirect('upload/fail')
+        if(request.user.groups.count() > 1):
+            return HttpResponse(status=501) # multi-group model is not supported
+             
+        #title = request.FILES.charField(max_length=50)
+        form = UploadFileForm(request.POST, request.FILES)
+    
+        #if not form.is_valid():
+        #    return HttpResponseRedirect('upload/fail?reason=formIsNotValid')        
+
+        """ if we get here, then it's safe to save the form into the database"""
+        blob = request.FILES['myFile']
+        
+        orgs = request.user.groups.all()
+        org = orgs[0]
+
+        if(org is None):
+            return HttpResponse(status=500, content="Unexpected none")
+
+
+        file = File(
+            organization = org,
+            blob = blob,
+            uploaded = date.today(),
+            download_count = 0
+        )
+        file.save()
+
+        return HttpResponseRedirect('upload/success')
+
