@@ -4,6 +4,7 @@ from django.core.management.base import BaseCommand
 from django.contrib.auth.models import User, Group
 from datetime import date
 from files.models import File
+from common.utils.helpers import io_helpers
 
 # python manage.py seed --mode=refresh
 
@@ -88,7 +89,7 @@ def add_seed_files(group, user1, user2):
         group=group,
         user=user1,
         name='Example file 1',
-        filepath='media/example1.txt',
+        filepath='example1.txt',
         uploaded=date(2022, 5, 22),
         download_count=1,
     )
@@ -97,7 +98,7 @@ def add_seed_files(group, user1, user2):
         group=group,
         user=user1,
         name='Example file 2',
-        filepath='media/example3.txt',
+        filepath='example2.txt',
         uploaded=date(2009, 1, 9),
         download_count=1,
     )
@@ -106,7 +107,7 @@ def add_seed_files(group, user1, user2):
         group=group,
         user=user2,
         name='Example file 3',
-        filepath='media/example3.txt',
+        filepath='example3.txt',
         uploaded=date(2013, 1, 18),
         download_count=1,
     )

@@ -12,8 +12,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+from common.utils.helpers import io_helpers
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_PROJ_DIR = Path(__file__).resolve().parent
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -134,5 +137,5 @@ LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/" 
 
 # for saving files
-MEDIA_ROOT= os.path.join(BASE_DIR, 'media/')
+MEDIA_ROOT= os.path.join(BASE_DIR, io_helpers.get_upload_folder())
 MEDIA_URL= "/media/"

@@ -19,7 +19,7 @@
       <td class="td-uploaded">{{file.uploaded}}</td>
       <td class="td-download-count">{{file.download_count}}</td>
       <td class="td-download-link">
-        <a href="{{ MEDIA_URL }}{{ file.filepath }}" target="_blank">download</a>
+        <a href="/files/downloads/{{file.id}}" target="_blank">download</a>
       </td>
     </tr>
   {% endfor %}
