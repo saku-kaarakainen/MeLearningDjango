@@ -44,7 +44,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'files',
     'common',
-    #'rest_framework',
+
+    # TODO: Convert into Django REST framework :(
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

@@ -59,4 +59,7 @@ Keep track of how many times each file has been downloaded, and how many total f
 Use Django and Django REST Framework (https://www.django-rest-framework.org/). You can use a database of your choice.
 
 ### Notes from the specification
- - 
+ - Even though the specs is saying about REST framework, this is technically done with plain Django. It's just because I misread the specs. 
+    -> I added Django REST to installed apps, so i guess you can say it's used here *insert 'its something' meme*
+ - organization file upload count is not stored in the database but just calculated in the endpoint.
+ - UI is implemented but it doesn't have separate UI nor even endpoint for fetching data from other organizations. You can download files of other organizations if you know their file id...

@@ -21,9 +21,14 @@ class getFiles(View):
     @login_required
     def get(self, request):
         group = db_helpers.get_organization_by_user_from_the_request(request)
-        files = File.objects.filter(group_id=group.id).all()
+        files = File.objects.filter(group_id=group.id).all()        
+        file_count_list= files.values_list("download_count", flat=True)
+        file_count = 0
+        for item in file_count_list:
+            file_count = file_count + item
+
         data = {
-            'pagetitle': 'Uploaded files by the organization',
+            'pagetitle': f"Uploaded files by the organization, which are downloaded {file_count} times.",
             'files': files,
         }
         return render(request, "listFiles.html", data)
