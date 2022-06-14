@@ -40,11 +40,6 @@ class getFilesByUser(View):
             'files': files,
         }
 
-        
-        #message_helpers.message(request)
-        if(request['uploadResult'] == 'succeed'):
-            messages.success(request, "File upload succeed.")
-
         return render(request, "listFiles.html", data)
 
 class downloadFile(View):
@@ -53,19 +48,19 @@ class downloadFile(View):
     # GET files/downloads/{file_id}
     @login_required
     def get(self, request, file_id=-1):
-        print("WE GOT file_id:")
-        print(file_id)
+        try:
+            # TODO: download count do update, but it requires new page refresh. fix it.
+            db_model = File.objects.get(id=file_id)        
+            db_model.download_count =  db_model.download_count + 1
+            db_model.save()
 
-        db_model = File.objects.get(id=file_id)        
+            filename = db_model.filepath.name.split('/')[-1]
+            response = HttpResponse(db_model.filepath, content_type='text/plain')
+            response['Content-Disposition'] = 'attachment; filename=%s' % filename
 
-        print("FILE FILE FILE")
-        print(db_model.filepath.name)
-
-        filename = db_model.filepath.name.split('/')[-1]
-        response = HttpResponse(db_model.filepath, content_type='text/plain')
-        response['Content-Disposition'] = 'attachment; filename=%s' % filename
-
-        return response
+            return response
+        except File.DoesNotExist:
+            return HttpResponse(status=404)
 
 class uploadFile(View):
     user = User
@@ -87,28 +82,28 @@ class uploadFile(View):
     """
     @login_required
     def post(self, request):
-        #try:
+        try:
             #title = request.FILES.charField(max_length=50)
-        form = UploadFileForm(request.POST, request.FILES)
-        upload = request.FILES['myFile']
-        io_helpers.save_file_to_disk(upload)
+            #form = UploadFileForm(request.POST, request.FILES)
+            upload = request.FILES['myFile']
+            io_helpers.save_file_to_disk(upload)
 
-        """ if the code gets here, then it's safe to save the form into the database"""       
-        group = db_helpers.get_organization_by_user_from_the_request(request)
+            """ if the code gets here, then it's safe to save the form into the database"""       
+            group = db_helpers.get_organization_by_user_from_the_request(request)
 
-        # TODO: Handle duplicate files
-        file = File(
-            group = group,
-            user = request.user,
-            name = upload.name,
-            filepath = upload.name,
-            uploaded = date.today(),
-            download_count = 0
-        )
-        file.save()
-        #except:
-        #    io_helpers.remove_uploaded_file(upload)
-        #    return HttpResponse(status=500, content="Unable to save the file into the database.")
+            # TODO: Handle duplicate files
+            file = File(
+                group = group,
+                user = request.user,
+                name = upload.name,
+                filepath = upload.name,
+                uploaded = date.today(),
+                download_count = 0
+            )
+            file.save()
+        except:
+            io_helpers.remove_uploaded_file(upload)
+            return HttpResponse(status=500, content="Unable to save the file into the database.")
 
         # 200 would be OK with a normal REST API
         # I wouldn't use 201, because this endpoint also make database operation

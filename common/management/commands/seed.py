@@ -35,11 +35,17 @@ def clear_data():
 
 def add_first_user_and_group():
     # Add group. In this model, an organization equals a group.
-    group = Group(
+    group1 = Group(
         id=1,
         name='organization 1'
     )
-    group.save()
+    group2 = Group(
+        id=2,
+        name='organization 2'
+    )
+
+    group1.save()
+    group2.save()
 
     # Add user
     # password equals to'su'
@@ -74,19 +80,25 @@ def add_first_user_and_group():
     user1.save()
     user2.save()   
     
-    user1.groups.add(group) 
-    user2.groups.add(group)
+    user1.groups.add(group1) 
+    user2.groups.add(group2)
 
     user1.save()
     user2.save()
     
-    print("some users added to the newly created group '{}'.".format(group))
-    return (group, user1, user2)
+    print("user/org seeding done.")
+    return (
+        group1,
+        group2, 
+        user1,
+        user2
+    )
 
-def add_seed_files(group, user1, user2):
+def add_seed_files(group1, group2, user1, user2):
     print("adding some files to the database")
     file1 = File(
-        group=group,
+        id=1,
+        group=group1,
         user=user1,
         name='Example file 1',
         filepath='example1.txt',
@@ -95,7 +107,8 @@ def add_seed_files(group, user1, user2):
     )
 
     file2 = File(
-        group=group,
+        id=2,
+        group=group1,
         user=user1,
         name='Example file 2',
         filepath='example2.txt',
@@ -103,8 +116,10 @@ def add_seed_files(group, user1, user2):
         download_count=1,
     )
 
+    # Different user, also belongs in the different organization
     file3 = File(
-        group=group,
+        id=3,
+        group=group2,
         user=user2,
         name='Example file 3',
         filepath='example3.txt',
@@ -112,9 +127,22 @@ def add_seed_files(group, user1, user2):
         download_count=1,
     )
 
+    # also, organization 2
+    file4 = File(
+        id=4,
+        group=group2,
+        user=user2,
+        name='Example file 3',
+        filepath='example4.txt',
+        uploaded=date(2015, 7, 30),
+        download_count=1,
+    )
+
+
     file1.save()
     file2.save()
     file3.save()
+    file4.save()
 
 def run_seed(self, mode):
     """ Seed database based on mode
@@ -127,5 +155,5 @@ def run_seed(self, mode):
     if mode == MODE_CLEAR:
         return
 
-    group, user1, user2 = add_first_user_and_group()
-    add_seed_files(group, user1, user2)
+    group1, group2, user1, user2 = add_first_user_and_group()
+    add_seed_files(group1, group2, user1, user2)
